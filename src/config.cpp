@@ -2,26 +2,26 @@
 #include <string>
 #include <optional>
 
-#include "config_mngr.h"
+#include "config.h"
 
 
 //constructor
-config_mngr::config_mngr(std::string config_path) {
+config::config(std::string config_path) {
 
     this->config_path = config_path;
 }
 
 //read the config
-std::optional<std::string> config_mngr::parse_config() {
+std::optional<std::string> config::parse_config() {
 
     //read config file
     try {
         this->cfg.readFile(this->config_path.c_str());
     } catch (const libconfig::FileIOException &f_io_excp) {
-        return "[config_mngr::parge_config] libconfig::readFile() : "
+        return "[config::parge_config] libconfig::readFile() "
                "FileIOException";
     } catch (const libconfig::ParseException &p_excp) { 
-        return "[config_mngr::parge_config] libconfig::readFile() : "
+        return "[config::parge_config] libconfig::readFile() "
                "ParseException";
     }
 
@@ -41,7 +41,7 @@ std::optional<std::string> config_mngr::parse_config() {
         this->offs.pent_y          = this->cfg.lookup("offsets.pent_y");
         this->offs.pent_z          = this->cfg.lookup("offsets.pent_z");
     } catch (const libconfig::SettingNotFoundException &s_n_f_excp) {
-        return "[config_mngr::parge_config] libconfig::lookup() : "
+        return "[config::parge_config] libconfig::lookup() "
                "SettngNotFoundException";
     }
 
@@ -50,6 +50,6 @@ std::optional<std::string> config_mngr::parse_config() {
 
 
 //get pointer to offsets structure
-offsets * config_mngr::get_offsets() {
+offsets * config::get_offsets() {
     return &this->offs;
 }

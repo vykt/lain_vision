@@ -30,7 +30,7 @@ typedef struct {
 
 
 //read config, return controller
-class config_mngr {
+class config {
 
     //attributes
     private:
@@ -41,7 +41,7 @@ class config_mngr {
     //methods
     public:
         //important
-        config_mngr(std::string config_path);
+        config(std::string config_path);
         std::optional<std::string> parse_config(); 
 
         //getters & setters
