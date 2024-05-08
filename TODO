@@ -1,0 +1,2 @@
+- replace all optional<string> return types with more efficient alternatives 
+  where appropriate.
