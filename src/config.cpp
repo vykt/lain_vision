@@ -28,18 +28,18 @@ std::optional<std::string> config::parse_config() {
     //get entries
     try {
         //entity list
-        this->offs.entity_list_ptr = this->cfg.lookup("offsets.entity_list_ptr");
+        this->offs.entity_list_selector_ptr 
+            = this->cfg.lookup("offsets.entity_list_selector_list_ptr");
 
         //controller structure
         this->offs.ctrl_name       = this->cfg.lookup("offsets.ctrl_name");
-        this->offs.ctrl_pent_index = this->cfg.lookup("offsets.ctrl_pent_index");
+        this->offs.ctrl_play_index = this->cfg.lookup("offsets.ctrl_play_index");
 
         //player_ent structure
-        this->offs.pent_hp         = this->cfg.lookup("offsets.pent_hp");
-        this->offs.pent_ap         = this->cfg.lookup("offsets.pent_ap");
-        this->offs.pent_x          = this->cfg.lookup("offsets.pent_x");
-        this->offs.pent_y          = this->cfg.lookup("offsets.pent_y");
-        this->offs.pent_z          = this->cfg.lookup("offsets.pent_z");
+        this->offs.play_hp_ap      = this->cfg.lookup("offsets.play_hp_ap");
+        this->offs.play_pos        = this->cfg.lookup("offsets.play_pos");
+        this->offs.play_rotation     = this->cfg.lookup("offsets.play_rotation");
+    
     } catch (const libconfig::SettingNotFoundException &s_n_f_excp) {
         return "[config::parge_config] libconfig::lookup() "
                "SettngNotFoundException";

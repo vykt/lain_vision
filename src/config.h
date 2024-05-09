@@ -9,22 +9,23 @@
 #include <libconfig.h++>
 
 
+#define CONTROLLER_NAME_LEN 32
+
+
 //offset in cs2
 typedef struct {
 
     //global structures
-    uintptr_t entity_list_ptr;
+    uintptr_t entity_list_selector_list_ptr;
 
     //controller structure
     uintptr_t ctrl_name;
-    uintptr_t ctrl_pent_index;
+    uintptr_t ctrl_play_index;
 
     //player_ent structure
-    uintptr_t pent_hp;
-    uintptr_t pent_ap;
-    uintptr_t pent_x;
-    uintptr_t pent_y;
-    uintptr_t pent_z;
+    uintptr_t play_hp_ap;
+    uintptr_t play_pos;
+    uintptr_t play_rotation;
 
 } offsets;
 
