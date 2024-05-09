@@ -18,6 +18,10 @@ typedef struct {
     //global structures
     uintptr_t entity_list_selector_list_ptr;
 
+    //view
+    uintptr_t view_angles_source_ptr;
+    uintptr_t view_angles;
+
     //controller structure
     uintptr_t ctrl_name;
     uintptr_t ctrl_play_index;
@@ -25,7 +29,6 @@ typedef struct {
     //player_ent structure
     uintptr_t play_hp_ap;
     uintptr_t play_pos;
-    uintptr_t play_rotation;
 
 } offsets;
 

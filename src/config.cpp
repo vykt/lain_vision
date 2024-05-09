@@ -31,6 +31,11 @@ std::optional<std::string> config::parse_config() {
         this->offs.entity_list_selector_ptr 
             = this->cfg.lookup("offsets.entity_list_selector_list_ptr");
 
+        //view
+        this->offs.view_angles_source_ptr
+            = this->cfg.lookup("offsets.view_angles_source_ptr");
+        this->offs.view_angles = this->cfg.lookup("offsets.view_angles");
+
         //controller structure
         this->offs.ctrl_name       = this->cfg.lookup("offsets.ctrl_name");
         this->offs.ctrl_play_index = this->cfg.lookup("offsets.ctrl_play_index");
@@ -38,7 +43,6 @@ std::optional<std::string> config::parse_config() {
         //player_ent structure
         this->offs.play_hp_ap      = this->cfg.lookup("offsets.play_hp_ap");
         this->offs.play_pos        = this->cfg.lookup("offsets.play_pos");
-        this->offs.play_rotation     = this->cfg.lookup("offsets.play_rotation");
     
     } catch (const libconfig::SettingNotFoundException &s_n_f_excp) {
         return "[config::parge_config] libconfig::lookup() "
