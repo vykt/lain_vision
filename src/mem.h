@@ -35,7 +35,10 @@ class mem {
         //important
         template <typename T> std::optional<std::string> read_addr(uintptr_t addr, 
                                                                    T * buf);
-        std::optional<std::string> get_backing_file_addr(std::string backing_file,
+        template <typename T> std::optional<std::string> read_array_addr(uintptr_t addr,
+                                                                         T * buf,
+                                                                         int len);
+        std::optional<std::string> get_backing_file_addr(const char * backing_file,
                                                          uintptr_t * addr);
 };
 

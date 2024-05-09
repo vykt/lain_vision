@@ -135,14 +135,30 @@ template <typename T> std::optional<std::string> mem::read_addr(uintptr_t addr,
 }
 
 
+//read array of type T from remote address
+template <typename T> std::optional<std::string> mem::read_array_addr(uintptr_t addr,
+                                                                      T * buf, 
+                                                                      int len) {
+    off_t ret;
+    ssize_t read_bytes;
+
+    ret = lseek(this->fd_mem, addr, SEEK_SET);
+    if (ret == -1) return "[mem::read_array_addr] lseek() "
+                          "returned -1";
+
+    read_bytes = read(this->fd_mem, buf, sizeof(*buf) * len);
+    if (read_bytes == -1) return "[mem::read_array_addr] read() "
+                                 "returned -1";
+}
+
 //get start address of remote backing file
-std::optional<std::string> mem::get_backing_file_addr(std::string backing_file,
+std::optional<std::string> mem::get_backing_file_addr(const char * backing_file,
                                                       uintptr_t * addr) {
     int ret;
     maps_obj * matched_obj;
     maps_entry * first_segment_entry;
 
-    ret = get_obj_by_basename((char *) backing_file.c_str(), 
+    ret = get_obj_by_basename((char *) backing_file, 
                               &this->m_data, &matched_obj);
     //if error
     if (ret == -2) return "[mem::get_backing_file_addr] get_obj_by_base_name() "
