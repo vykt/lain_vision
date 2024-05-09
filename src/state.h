@@ -68,7 +68,6 @@ typedef struct {
 
     vertex_3d pos_world;
     vertex_3d pos_view;
-    vertex_3d rotation;
 
     uintptr_t cached_addr;
 
@@ -83,6 +82,16 @@ typedef struct {
 } ent_list;
 
 
+//view related
+typedef struct {
+
+    float theta;
+    vertex_3d view_angles;
+    vertex_2d rotation_vertex[2];
+
+    uintptr_t cached_addr;
+} view_data;
+
 
 class state {
 
@@ -94,6 +103,9 @@ class state {
         //global addresses (e.g.: loaded shared object addresses)
         shared_obj_addrs so_addrs;
 
+        //view related
+        view_data view;
+
         //config_mngr produced offsets
         offsets * offs;
 
@@ -101,18 +113,16 @@ class state {
         ent_list e_list;
         std::vector<controller_ent> controller_ents;
         std::vector<player_ent> player_ents;
-
-        //drawing state
-        float yaw_theta;           //TODO set me
-        vertex_2d rotation_vertex; //TODO set me
     
     //methods
     private:
         std::optional<std::string> traverse_ent_list(uint32_t index, 
                                                      uintptr_t * ent_addr);
+        std::optional<std::string> traverse_view_structs();
         std::optional<std::string> read_remote_c_ent(uintptr_t c_ent_addr,
                                                      controller_ent * temp_c_ent_ptr);
         std::optional<std::string> read_remote_p_ent(player_ent * temp_p_ent_ptr);
+        std::optional<std::string> update_view_data();
         std::optional<std::string> world_to_view_pos(player_ent * player_ent_ref,
                                                      player_ent * lain_ent_ref);
 
@@ -123,7 +133,7 @@ class state {
 
         //important
         std::optional<std::string> update_core_state();
-        std::optional<std::string> update_player_ent_state();
+        std::optional<std::string> update_cached_state();
 
         //getters & setters
         std::vector<controller_ent> * get_controller_ents();

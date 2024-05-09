@@ -66,6 +66,29 @@ std::optional<std::string> state::traverse_ent_list(uint32_t index,
 }
 
 
+//traverse view structures source to cache addrs of view struct members
+inline std::optional<std::string> state::traverse_view_structs() {
+
+    std::optional<std::string> ret;
+
+    uintptr_t view_angle_base_ptr, view_angle_base, temp_addr;
+
+    //fetch pointer to the base of the struct that holds view angles
+    temp_addr = this->offs->view_angles_source_ptr;
+    ret = this->mem_mngr.read_addr(temp_addr, &view_angle_base_ptr);
+    if (ret) return ret.value() + "\n from: [state:traverse_view_source]";
+
+    //fetch the base of the structure that holds view angles
+    ret = this->mem_mngr.read_addr(view_angle_base_ptr, &view_angle_base); 
+    if (ret) return ret.value() + "\n from: [state:traverse_view_source]";
+
+    //set pointer to view angles
+    this->view.cached_addr = view_angle_base + this->offs->view_angles;
+
+    return std::nullopt;
+}
+
+
 //read controller_ent values from remote process into local state
 std::optional<std::string> state::read_remote_c_ent(uintptr_t c_ent_addr,
                                                     controller_ent * temp_c_ent_ptr) {
@@ -107,10 +130,28 @@ std::optional<std::string> state::read_remote_p_ent(player_ent * temp_p_ent_ptr)
     ret = this->mem_mngr.read_addr(temp_addr, &temp_p_ent_ptr->pos_world); 
     if (ret) return ret.value() + "\n from: [state::read_remote_p_ent]";
 
-    //read player rotation
-    temp_addr = temp_p_ent_ptr->cached_addr + this->offs->play_rotation;
-    ret = this->mem_mngr.read_addr(temp_addr, &temp_p_ent_ptr->rotation); 
-    if (ret) return ret.value() + "\n from: [state::read_remote_p_ent]";
+    return std::nullopt;
+}
+
+
+//read view_angles from remote process into local store
+inline std::optional<std::string> state::update_view_data() {
+
+    std::optional<std::string> ret;
+
+    //read remote view angles
+    ret = this->mem_mngr.read_addr(this->view.cached_addr, &this->view.view_angles);
+    if (ret) return ret.value() + "\n from: [state::update_player_ent_state]";
+
+    /*
+     *  TODO TODO TODO
+     *
+     *   1) calculate theta based on view_data.view_angles (second angle?)
+     *
+     *   2) update rotation_vertex using the new theta
+     *
+     *  TODO TODO TODO
+     */
 
     return std::nullopt;
 }
@@ -137,7 +178,15 @@ std::optional<std::string> state::world_to_view_pos(player_ent * player_ent_ref,
     player_ent_ref->pos_view.z -= lain_ent_ref->pos_view.z;
 
     //apply rotation to x & y coordinates
-    //TODO
+    /*
+     *  TODO TODO TODO
+     *
+     *   apply the rotation_vertex to x and y coordinates of the player_ent
+     *
+     *  TODO TODO TODO
+     */
+
+    return std::nullopt;
 }
 
 
@@ -194,6 +243,11 @@ std::optional<std::string> state::update_core_state() {
     player_ent temp_player_ent;
 
 
+    //re-cache view related pointers
+    ret = traverse_view_structs();
+    if (ret) return ret.value() + "\n from: [state::update_core_state]";
+
+
     //get address of entity list selector list
     temp_addr = this->so_addrs.client_so + this->offs->entity_list_selector_list_ptr;
     ret = this->mem_mngr.read_addr(temp_addr, &this->e_list.selector_list_addr);
@@ -238,9 +292,13 @@ std::optional<std::string> state::update_core_state() {
 
 
 //update each player entity's health, armour, and world & view positions
-std::optional<std::string> state::update_player_ent_state() {
+std::optional<std::string> state::update_cached_state() {
 
     /*
+     *  0) read view angles
+     *
+     *  0.5) calculate theta & rotation_vertex
+     *
      *  1) fill player_ents.vitals
      *
      *  2) fill player_ent.pos_world
@@ -253,17 +311,19 @@ std::optional<std::string> state::update_player_ent_state() {
     controller_ent * controller_ent_ref;
     player_ent * player_ent_ref;
 
-    //for every controller, fill corresponding player entity
+
+    //update view data
+
+    //for every controller, update corresponding player entity
     for (unsigned long i = 0; i < this->player_ents.size(); ++i) {
 
         ret = read_remote_p_ent(&this->player_ents[i]);
         if (ret) return ret.value() + "\n from: [state::update_player_ent_state]";
 
-        //if just read lain's player entity, update draw state
+        //if lain update theta & rotation_vertex for use with view-relative conversions
         if (i == 0) {
-            //TODO
-            // 1) set theta
-            // 2) calculate rotation matrix
+            ret = update_view_data();
+            if (ret) return ret.value() + "\n from: [state::update_player_ent_state]";
         }
 
         ret = world_to_view_pos(&this->player_ents[i], &this->player_ents[0]);
