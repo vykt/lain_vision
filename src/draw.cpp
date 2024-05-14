@@ -106,6 +106,8 @@ std::optional<std::string> draw::init_x11(unsigned int scr_width, unsigned int s
     XFixesSetWindowShapeRegion(this->x11_display, this->overlay_win, ShapeInput, 0, 0, region);
     XFixesDestroyRegion(this->x11_display, region);
 
+    //map window
+    XMapWindow(this->x11_display, this->overlay_win);
 
     return std::nullopt;
 }
@@ -189,4 +191,34 @@ void draw::fini() {
     
     fini_sdl();
     fini_x11();
+}
+
+
+//update display & clear draw buffer
+void draw::update() {
+
+    //update display & flush
+    SDL_RenderPresent(this->sdl_renderer);
+    XFlush(this->x11_display);
+
+    //reset draw buffer
+    SDL_SetRenderDrawColor(this->sdl_renderer, 0, 0, 0, 0);
+    SDL_RenderClear(this->sdl_renderer);
+}
+
+
+//draw radar blip request
+void draw::draw_blip(draw_blip_req blip_req) {
+
+    SDL_Rect blip_rect;
+
+    //convert request into SDL2 rectangle & color
+    blip_rect.x = blip_req.pos_x - blip_req.width / 2;
+    blip_rect.y = blip_req.pos_y - blip_req.height / 2;
+    blip_rect.w = blip_req.width;
+    blip_rect.h = blip_req.height;
+    SDL_SetRenderDrawColor(this->sdl_renderer, blip_req.colors.r, blip_req.colors.g, blip_req.colors.b, blip_req.colors.a);
+
+    //draw blip
+    SDL_RenderFillRect(this->sdl_renderer, &blip_rect);
 }
