@@ -143,28 +143,25 @@ inline std::optional<std::string> state::update_view_data() {
     ret = this->mem_mngr.read_addr(this->view.cached_addr, &this->view.view_angles);
     if (ret) return ret.value() + "\n from: [state::update_player_ent_state]";
 
-    /*
-     *  TODO TODO TODO
-     *
-     *   1) calculate theta based on view_data.view_angles (second angle?)
-     *
-     *   2) update rotation_vertex using the new theta
-     *
-     *  TODO TODO TODO
-     */
+    //get theta
+    if (this->view.view_angles.y < 0.0f) {
+        this->view.theta = 360.0f - this->view.view_angles.y;
+    } else {
+        this->view.theta = this->view.view_angles.y;
+    }
+
+    //calculate rotation vertex using new theta
+    this->view.rotation_vertex[0].x = this->view.rotation_vertex[1].y = cos(this->view.theta);
+    this->view.rotation_vertex[1].x = sin(this->view.theta);
+    this->view.rotation_vertex[0].y = -1.0f * this->view.rotation_vertex[1].x;
 
     return std::nullopt;
 }
 
 
-//convert world position of each player_ent into a view-relative position
+//convert world position of each player_ent into a view-relative position, then rotate with rotation vertex
 std::optional<std::string> state::world_to_view_pos(player_ent * player_ent_ref,
                                                     player_ent * lain_ent_ref) {
-
-    /*
-     *  1) use lain player_ent's rotation and world_pos to get view_pos for all
-     *     other ents. if lain, set view_pos to {0,0,0}
-     */
 
     //check if lain
     if (player_ent_ref == lain_ent_ref) {
@@ -177,14 +174,16 @@ std::optional<std::string> state::world_to_view_pos(player_ent * player_ent_ref,
     player_ent_ref->pos_view.y -= lain_ent_ref->pos_view.y;
     player_ent_ref->pos_view.z -= lain_ent_ref->pos_view.z;
 
-    //apply rotation to x & y coordinates
-    /*
-     *  TODO TODO TODO
-     *
-     *   apply the rotation_vertex to x and y coordinates of the player_ent
-     *
-     *  TODO TODO TODO
-     */
+    //for all the players, apply rotation to x & y coordinates
+    for (unsigned long i = 0; i < this->player_ents.size(); ++i) {
+
+        //apply rotation vertex to view-relative coordinates
+        this->player_ents[i].pos_view.x =   this->player_ents[i].pos_view.x * this->view.rotation_vertex[0].x 
+                                          + this->player_ents[i].pos_view.y * this->view.rotation_vertex[0].y;
+
+        this->player_ents[i].pos_view.y =   this->player_ents[i].pos_view.y * this->view.rotation_vertex[1].x 
+                                          + this->player_ents[i].pos_view.x * this->view.rotation_vertex[1].y;         
+    } //end for
 
     return std::nullopt;
 }
@@ -254,8 +253,8 @@ std::optional<std::string> state::update_core_state() {
     if (ret) return ret.value() + "\n from [state::update_core_state]";
 
     //clear controller & player vectors
-    this->controller_ents.empty();
-    this->player_ents.empty(); 
+    this->controller_ents.clear();
+    this->player_ents.clear(); 
     memset(&temp_player_ent, 0, sizeof(temp_player_ent));
 
 
@@ -331,6 +330,7 @@ std::optional<std::string> state::update_cached_state() {
 
     } //end for
 
+    return std::nullopt;
 }
 
 
