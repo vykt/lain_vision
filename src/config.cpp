@@ -25,10 +25,10 @@ std::optional<std::string> config::parse_config() {
                "ParseException";
     }
 
-    //get entries
+    //get offsets
     try {
         //entity list
-        this->offs.entity_list_selector_ptr 
+        this->offs.entity_list_selector_list_ptr 
             = this->cfg.lookup("offsets.entity_list_selector_list_ptr");
 
         //view
@@ -46,9 +46,19 @@ std::optional<std::string> config::parse_config() {
     
     } catch (const libconfig::SettingNotFoundException &s_n_f_excp) {
         return "[config::parge_config] libconfig::lookup() "
-               "SettngNotFoundException";
+               "SettingNotFoundException raised while parsing offsets";
     }
 
+    //get settings
+    try {
+        //screen resolution
+        this->sets.scr_width = this->cfg.lookup("settings.scr_width");
+        this->sets.scr_height = this->cfg.lookup("settings.scr_height");
+    } catch (const libconfig::SettingNotFoundException &s_n_f_excp) {
+        return "[config::parse_config] libconfig::lookup() "
+               "SettingNotFoundException raised while parsing settings";
+    }
+    
     return std::nullopt;
 }
 

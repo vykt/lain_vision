@@ -33,6 +33,15 @@ typedef struct {
 } offsets;
 
 
+//settings specified in config
+typedef struct {
+
+    unsigned int scr_width;
+    unsigned int scr_height;
+
+} settings;
+
+
 //read config, return controller
 class config {
 
@@ -40,6 +49,7 @@ class config {
     private:
         libconfig::Config cfg;
         offsets offs;
+        settings sets;
         std::string config_path;
 
     //methods
