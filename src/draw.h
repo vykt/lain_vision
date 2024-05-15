@@ -45,7 +45,7 @@ class draw {
     
     public:
         //init & fini
-        std::optional<std::string> init(unsigned int scr_width, unsigned int scr_height);
+        std::optional<std::string> init(settings * sets);
         void fini();
 
         //update display & clear draw buffer

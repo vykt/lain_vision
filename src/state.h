@@ -13,10 +13,6 @@
 #include "config.h"
 
 
-//shared object names
-const char * so_client = "libclient.so";
-
-
 //shared object start addresses
 typedef struct {
 

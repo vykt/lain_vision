@@ -15,6 +15,9 @@
 #include "config.h"
 
 
+//shared object names
+const char * so_client = "libclient.so";
+
 /*
  *  private
  */

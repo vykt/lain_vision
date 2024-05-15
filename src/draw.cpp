@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 
 #include "draw.h"
+#include "config.h"
 
 
 /*
@@ -170,12 +171,12 @@ std::string draw::get_sdl_err(const char * err_msg) {
  */
 
 //initialise in correct order in correct order
-std::optional<std::string> draw::init(unsigned int scr_width, unsigned int scr_height) {
+std::optional<std::string> draw::init(settings * sets) {
 
     std::optional<std::string> ret;
 
     //initialise X11
-    ret = init_x11(scr_width, scr_height);
+    ret = init_x11(sets->scr_width, sets->scr_height);
     if (ret) return ret.value() + "\n from: [draw::init]";
 
     //initialise SDL2 & attach to X11 overlay
