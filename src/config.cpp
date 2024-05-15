@@ -55,13 +55,14 @@ std::optional<std::string> config::parse_config() {
         this->sets.scr_width = this->cfg.lookup("settings.scr_width");
         this->sets.scr_height = this->cfg.lookup("settings.scr_height");
         
-        //radar cheat
+        //radar mod
         this->sets.radar_pos_x = this->cfg.lookup("settings.radar_pos_x");
         this->sets.radar_pos_x = this->cfg.lookup("settings.radar_pos_x");
         this->sets.radar_diameter = this->cfg.lookup("settings.radar_diameter");
+        this->sets.radar_view_distance_limit = this->cfg.lookup("settings.radar_view_distance_limit");
         this->sets.radar_height_diff_limit = this->cfg.lookup("settings.radar_height_diff_limit");
         this->sets.radar_blip_size = this->cfg.lookup("settings.radar_blip_size");
-        this->sets.coords_in_pixel = this->cfg.lookup("settings.coords_in_pixel");
+        this->sets.radar_coords_in_pixel = this->cfg.lookup("settings.radar_coords_in_pixel");
 
     } catch (const libconfig::SettingNotFoundException &s_n_f_excp) {
         return "[config::parse_config] libconfig::lookup() "

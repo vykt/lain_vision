@@ -40,13 +40,14 @@ typedef struct {
     unsigned int scr_width;
     unsigned int scr_height;
 
-    //radar cheat
+    //radar mod
     int radar_pos_x;
     int radar_pos_y;
     float radar_diameter;
+    float radar_view_distance_limit;
     float radar_height_diff_limit;
     float radar_blip_size;
-    float coords_in_pixel;
+    float radar_coords_in_pixel;
 
 } settings;
 
