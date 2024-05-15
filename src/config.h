@@ -60,16 +60,19 @@ class config {
         libconfig::Config cfg;
         offsets offs;
         settings sets;
-        std::string config_path;
 
     //methods
     public:
+        //init & fini
+        std::optional<std::string> init();
+        void fini();
+
         //important
-        config(std::string config_path);
         std::optional<std::string> parse_config(); 
 
         //getters & setters
         offsets * get_offsets();
+        settings * get_settings();
 };
 
 

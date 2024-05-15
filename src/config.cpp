@@ -1,22 +1,35 @@
 #include <iostream>
 #include <string>
 #include <optional>
+#include <filesystem>
 
 #include "config.h"
 
 
-//constructor
-config::config(std::string config_path) {
+//config paths
+const char * local_conf_path = "~/.config/lain_vision/lain_vision.cfg";
+const char * system_conf_path = "/etc/lain_vision/lain_vision.cfg";
 
-    this->config_path = config_path;
-}
 
-//read the config
-std::optional<std::string> config::parse_config() {
+
+//open config, priority given to local
+std::optional<std::string> config::init() {
+
+    char * conf_path;
+
+    //check config exists
+    if(std::filesystem::exists(local_conf_path)) {
+        conf_path = (char *) local_conf_path;
+    } else if (std::filesystem::exists(system_conf_path)) {
+        conf_path = (char *) system_conf_path;
+    } else {
+        return "[config::init] std::filesystem::exists() "
+               "both local and global configs missing";
+    }
 
     //read config file
     try {
-        this->cfg.readFile(this->config_path.c_str());
+        this->cfg.readFile(conf_path);
     } catch (const libconfig::FileIOException &f_io_excp) {
         return "[config::parge_config] libconfig::readFile() "
                "FileIOException";
@@ -24,6 +37,19 @@ std::optional<std::string> config::parse_config() {
         return "[config::parge_config] libconfig::readFile() "
                "ParseException";
     }
+
+    return std::nullopt;
+}
+
+
+//nothing to do!
+void config::fini() {
+
+}
+
+
+//read the config
+std::optional<std::string> config::parse_config() {
 
     //get offsets
     try {
@@ -76,4 +102,10 @@ std::optional<std::string> config::parse_config() {
 //get pointer to offsets structure
 offsets * config::get_offsets() {
     return &this->offs;
+}
+
+
+//get pointer to settings structure
+settings * config::get_settings() {
+    return &this->sets;
 }
