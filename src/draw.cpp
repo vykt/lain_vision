@@ -208,16 +208,16 @@ void draw::update() {
 
 
 //draw radar blip request
-void draw::draw_blip(draw_blip_req blip_req) {
+void draw::draw_blip(int pos_x , int pos_y, int size, draw_color * color) {
 
     SDL_Rect blip_rect;
 
     //convert request into SDL2 rectangle & color
-    blip_rect.x = blip_req.pos_x - blip_req.width / 2;
-    blip_rect.y = blip_req.pos_y - blip_req.height / 2;
-    blip_rect.w = blip_req.width;
-    blip_rect.h = blip_req.height;
-    SDL_SetRenderDrawColor(this->sdl_renderer, blip_req.colors.r, blip_req.colors.g, blip_req.colors.b, blip_req.colors.a);
+    blip_rect.x = pos_x - (size / 2);
+    blip_rect.y = pos_y - (size / 2);
+    blip_rect.w = size;
+    blip_rect.h = size;
+    SDL_SetRenderDrawColor(this->sdl_renderer, color->r, color->g, color->b, color->a);
 
     //draw blip
     SDL_RenderFillRect(this->sdl_renderer, &blip_rect);

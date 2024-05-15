@@ -12,19 +12,11 @@
 
 #include <SDL2/SDL.h>
 
+#include "state.h"
+
 
 //color to draw
 typedef SDL_Color draw_color;
-
-
-//radar blip draw request
-typedef struct {
-
-    int pos_x, pos_y;
-    int width, height;
-    draw_color colors;
-
-} draw_blip_req;
 
 
 class draw {
@@ -60,7 +52,7 @@ class draw {
         void update();
 
         //draw requests
-        void draw_blip(draw_blip_req blip_req);
+        void draw_blip(int pos_x, int pos_y, int size, draw_color * color);
 
 };
 
