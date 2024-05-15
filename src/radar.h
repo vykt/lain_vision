@@ -25,8 +25,8 @@ class radar {
 
     //methods
     private:
-        //convert view-relative z-pos into a color
         draw_color get_color(float pos_z);
+        bool pos_to_screen(float pos_x, float pos_y, int * scr_x, int * scr_y);
 
     public:
         //init & fini
