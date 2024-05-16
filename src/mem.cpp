@@ -134,6 +134,10 @@ template <typename T> std::optional<std::string> mem::read_addr(uintptr_t addr,
     return std::nullopt;
 }
 
+//explicitly instantiate read_addr for the linker <3
+template std::optional<std::string> mem::read_addr(uintptr_t addr, uintptr_t * buf);
+template std::optional<std::string> mem::read_addr(uintptr_t addr, uint32_t * buf);
+
 
 //read array of type T from remote address
 template <typename T> std::optional<std::string> mem::read_array_addr(uintptr_t addr,
@@ -149,7 +153,13 @@ template <typename T> std::optional<std::string> mem::read_array_addr(uintptr_t 
     read_bytes = read(this->fd_mem, buf, sizeof(*buf) * len);
     if (read_bytes == -1) return "[mem::read_array_addr] read() "
                                  "returned -1";
+    return std::nullopt;
 }
+
+//explicitly instantiate read_array_addr for the linker <3
+template std::optional<std::string> mem::read_array_addr(uintptr_t addr, char buf[32], int len);
+template std::optional<std::string> mem::read_array_addr(uintptr_t addr, byte * buf, int len);
+
 
 //get start address of remote backing file
 std::optional<std::string> mem::get_backing_file_addr(const char * backing_file,

@@ -37,7 +37,6 @@ std::optional<std::string> draw::init_x11(unsigned int scr_width, unsigned int s
     XColor draw_color;
 
     //overlay on top & input passthrough vars
-    unsigned long opacity;
     Atom wm_state_above;
     XserverRegion region;
 

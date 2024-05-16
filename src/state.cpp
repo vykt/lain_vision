@@ -82,7 +82,7 @@ inline std::optional<std::string> state::traverse_view_structs() {
     if (ret) return ret.value() + "\n from: [state:traverse_view_source]";
 
     //fetch the base of the structure that holds view angles
-    ret = this->mem_mngr.read_addr(view_angle_base_ptr, &view_angle_base); 
+    ret = this->mem_mngr.read_addr(view_angle_base_ptr, &view_angle_base);
     if (ret) return ret.value() + "\n from: [state:traverse_view_source]";
 
     //set pointer to view angles
@@ -102,7 +102,7 @@ std::optional<std::string> state::read_remote_c_ent(uintptr_t c_ent_addr,
     //read controller name
     temp_addr = c_ent_addr + this->offs->ctrl_name;
     ret = this->mem_mngr.read_array_addr(temp_addr, 
-                                         &temp_c_ent_ptr->name, CONTROLLER_NAME_LEN);
+                                         temp_c_ent_ptr->name, CONTROLLER_NAME_LEN);
     if (ret) return ret.value() + "\n from: [state::read_remote_c_ent]";
 
     //read player index for this controller
@@ -125,12 +125,12 @@ std::optional<std::string> state::read_remote_p_ent(player_ent * temp_p_ent_ptr)
 
     //read player hp & ap
     temp_addr = temp_p_ent_ptr->cached_addr + this->offs->play_hp_ap;
-    ret = this->mem_mngr.read_addr(temp_addr, &temp_p_ent_ptr->vitals);
+    ret = this->mem_mngr.read_array_addr(temp_addr, (byte *) &temp_p_ent_ptr->vitals, sizeof(temp_p_ent_ptr->vitals));
     if (ret) return ret.value() + "\n from: [state::read_remote_p_ent]";
 
     //read player position
     temp_addr = temp_p_ent_ptr->cached_addr + this->offs->play_pos;
-    ret = this->mem_mngr.read_addr(temp_addr, &temp_p_ent_ptr->pos_world); 
+    ret = this->mem_mngr.read_array_addr(temp_addr, (byte *) &temp_p_ent_ptr->pos_world, sizeof(temp_p_ent_ptr->pos_world));
     if (ret) return ret.value() + "\n from: [state::read_remote_p_ent]";
 
     return std::nullopt;
@@ -143,7 +143,7 @@ inline std::optional<std::string> state::update_view_data() {
     std::optional<std::string> ret;
 
     //read remote view angles
-    ret = this->mem_mngr.read_addr(this->view.cached_addr, &this->view.view_angles);
+    ret = this->mem_mngr.read_array_addr(this->view.cached_addr, (byte *) &this->view.view_angles, sizeof(this->view.view_angles));
     if (ret) return ret.value() + "\n from: [state::update_player_ent_state]";
 
     //get theta
@@ -309,10 +309,6 @@ std::optional<std::string> state::update_cached_state() {
      */
 
     std::optional<std::string> ret;
-
-    controller_ent * controller_ent_ref;
-    player_ent * player_ent_ref;
-
 
     //update view data
 
