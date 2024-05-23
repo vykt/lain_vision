@@ -1,0 +1,42 @@
+ENTITY LIST:
+    libclient.so + 0x03860740 [access at libclient.so + 0xc532e0]
+        from: access_ent_list + 0x11A0 (lea rax, [ENTITY_LIST_PTR])
+
+VIEW ANGLES:
+    libclient.so + 0x03724750 //view_angle_base_ptr_ptr + [...]
+                 + 0x0        //view_angle_base_ptr + [...]
+                 + 0x508      //view_angle_base + view_angle_offset
+
+
+--- OLD (v2 or v3?) ---
+
+FUNCTIONS:
+    libclient.so .init start: 0x5b0000
+
+    NAME                 | segment offset | segment r-x offset | file offset
+    copy_4ac_to_9fc      | 0xB54FB0       | 0x5A4FB0           | 0xB54FB0
+    call_copy_4ac_to_9fc | 0xCEDAF0       | 0x73DAF0           | 0xCEDAF0
+    top_big_func_copy    | 0xE47B80       | 0x897B80           | 0xE47B80
+    access_entity_list   | 0xC4FBF0       | 0x69FBF0           | 0xC4FBF0
+
+
+HP ACCESS FUNCTIONS:
+    libclient.so .init start: 0x5b0000
+
+    ADDR                 | segment offset | segment r-x offset | file offset | function_symbol
+    read:
+    > 0x7fc6e11932f7 [1] : 0xB932F7       | 0x5E32F7           | 0xB932F7    | compare_4ac_to_9fc
+    > 0x7fc6e1193303 [3] : 0xB93303       | 0x5E3303           | 0xB93303    | compare_4ac_to_9fc
+    > 0x7fc6e1154f3e [4] : 0xB54F3E       | 0x5A4F3E           | 0xB54F3E    | copy_4ac_to_9fc
+    > 0x7fc6e1154f38 [5] : 0xB54F38       | 0x5A4F38           | 0xB54F38    | copy_4ac_to_9fc
+    write:    
+    > 0x7fc6e0cd45b7 [2] : 0x6D45B7       | 0x1245B7           | 0x6D45B7    |
+    > 0x7fc6e1154f3e [4] : 0xB54F3E       | 0x5A4F3E           | 0xB54F3E    |
+
+
+CALL STACKS:
+    entity list access stack:
+    copy_4ac_to_9fc      [0xb54ef0]
+    call_copy_4ac_to_9fc [0xceda30] {return: +0x10}
+    top_big_func_copy    [0xe47ac0] {return: +0x660c}
+    access_entity_list   [0xc4fb30] {return: +0x11eb}

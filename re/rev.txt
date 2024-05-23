@@ -1,0 +1,28 @@
+COMMANDS:
+    test_list_entities   : list all entities in game by index & name
+
+
+INTERNAL ENTITY NAMES:
+    cs_player_controller : controller
+    player               : pawn
+
+
+OFFSETS (old):
+
+player(pawn):
+    0x4ac : libclient.so //health 1, SAME STRUCTURE
+    0x9fc : libclient.so //health 2, SAME STRUCTURE
+    0xce0 : libclient.so //coordinate vec3
+
+controller:
+    0x784 : libclient.so //player(pawn) index in entity list
+    0x7b8 : libclient.so //name
+    0x964 : libclient.so //player(pawn) index in entity list
+
+
+
+VIEW ANGLES:
+    //commands: setang, getpos
+
+    +x = 0 second angle  | -x = -180/180 second angle
+	+y = 90 second angle | -y = -90 second angle
