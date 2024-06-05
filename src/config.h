@@ -27,14 +27,18 @@ typedef struct {
     uintptr_t ctrl_play_index;
 
     //player_ent structure
-    uintptr_t play_hp_ap;
+    uintptr_t play_hp;
     uintptr_t play_pos;
+    uintptr_t play_ap;
 
 } offsets;
 
 
 //fine-tuning settings
 typedef struct {
+
+    //player name
+    std::string lain_name;
 
     //screen resolution
     unsigned int scr_width;
@@ -62,6 +66,9 @@ class config {
         settings sets;
 
     //methods
+    private:
+        bool exists(const char * path);
+
     public:
         //init & fini
         std::optional<std::string> init();
