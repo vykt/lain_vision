@@ -143,7 +143,6 @@ std::optional<std::string> draw::init_sdl() {
     ret = SDL_SetRenderDrawBlendMode(this->sdl_renderer, SDL_BLENDMODE_BLEND);
     if (ret) return get_sdl_err("[draw::init_sdl] SDL_SetRenderDrawBlendMode() returned non-zero: ");
 
-
     return std::nullopt;
 }
 

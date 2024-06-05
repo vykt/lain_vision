@@ -61,9 +61,16 @@ bool radar::pos_to_screen(float pos_x, float pos_y, int * scr_x, int * scr_y) {
     total_distance = sqrt((pos_x * pos_x) + (pos_y * pos_y));
     if (total_distance > this->sets->radar_view_distance_limit) return false;
 
+    /*
+     *  Screen coordinates and world coordinates do not map 1:1:
+     *
+     *  Screen: +x = right, +y = down
+     *  World:  +x = up,    +y = left
+     */
+
     //get screen coordiantes
-    *scr_x = (int) ((pos_x / this->sets->radar_coords_in_pixel) + this->sets->radar_pos_x);
-    *scr_y = (int) ((pos_y / this->sets->radar_coords_in_pixel) + this->sets->radar_pos_y);
+    *scr_x = (int) (this->radar_center.x - (pos_y / this->sets->radar_coords_in_pixel));
+    *scr_y = (int) (this->radar_center.y - (pos_x / this->sets->radar_coords_in_pixel));
 
     return true;
 }
@@ -99,6 +106,8 @@ void radar::draw_radar() {
 
         //get next player entity
         p_ent_ptr = &(*this->player_ents)[i];
+
+        if (p_ent_ptr->vitals.health < 0 || p_ent_ptr->vitals.health > 100) continue;
 
         //get screen coordinates for this player entity, and check if it should be drawn
         if(!pos_to_screen(p_ent_ptr->pos_view.x, p_ent_ptr->pos_view.y, &scr_x, &scr_y)) continue;

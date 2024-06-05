@@ -1,13 +1,17 @@
 #include <string>
 #include <optional>
 #include <iostream>
+#include <chrono>
 
 #include <cstdlib>
+
+#include <unistd.h>
 
 #include "radar.h"
 #include "state.h"
 #include "draw.h"
 #include "config.h"
+
 
 
 //error reporting macros
@@ -51,7 +55,7 @@ int main() {
     if (ret) error_terminate(ret);
 
     //init state manager
-    ret = state_mngr.init(conf_parser.get_offsets());
+    ret = state_mngr.init(conf_parser.get_settings(), conf_parser.get_offsets());
     if (ret) error_terminate(ret);
 
     //init draw manager
@@ -69,9 +73,12 @@ int main() {
     //bootstrap main loop
     refollow_count = 0;
 
-    //you spin me right round
+    //main loop
     while (1) {
         
+        //start timer
+        //auto loop_start_time = std::chrono::high_resolution_clock::now();
+
         //update core state
         if (refollow_count == 0) {
             ret = state_mngr.update_core_state();
@@ -90,12 +97,20 @@ int main() {
         //update display
         draw_mngr.update();
 
+        //end timer
+        //auto loop_end_time = std::chrono::high_resolution_clock::now();
+
+        //limit to 60fps
+        //while (std::chrono::duration_cast<std::chrono::milliseconds>(loop_end_time - loop_start_time).count() < 17) {
+        //    sleep(10000); //10ms
+        //    loop_end_time = std::chrono::high_resolution_clock::now();
+        //}
     } //end while
     
 
     //TODO TODO TODO
     // 
-    // find some way to break loop that isn't SIGTERM
+    // find some way to break the loop that isn't SIGTERM
     //
     //TODO TODO TODO
     

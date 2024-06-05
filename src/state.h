@@ -81,9 +81,9 @@ typedef struct {
 //view related
 typedef struct {
 
-    float theta;
     vertex_3d view_angles;
-    vertex_2d rotation_vertex[2];
+    float theta;
+    float sin_theta, cos_theta;
 
     uintptr_t cached_addr;
 } view_data;
@@ -103,6 +103,7 @@ class state {
         view_data view;
 
         //config_mngr produced offsets
+        settings * sets;
         offsets * offs;
 
         //entity state
@@ -124,7 +125,7 @@ class state {
 
     public:
         //init & fini
-        std::optional<std::string> init(offsets * offs);
+        std::optional<std::string> init(settings * sets, offsets * offs);
         std::optional<std::string> fini();
 
         //important
