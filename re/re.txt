@@ -1,0 +1,32 @@
+COMMANDS:
+    test_list_entities   : list all entities in game by index & name
+
+
+INTERNAL ENTITY NAMES:
+    cs_player_controller : controller
+    player               : pawn
+
+
+OFFSETS (old):
+
+player(pawn):
+    0x49c  : libclient.so //health 1
+    0x9fc  : libclient.so //health 2
+    0x127c : libclient.so //coordinate vec3
+    0x144c : libclient.so //string of callout for current position, null terminated (e.g.: "T Spawn")
+    0x1460 : libclient.so //armour
+
+controller:
+    0x784  : libclient.so //player(pawn) index in entity list
+    0x7b8  : libclient.so //name
+    0x964  : libclient.so //player(pawn) index in entity list
+
+view:
+    0x508  : libclient.so //angle vec3
+
+
+VIEW ANGLES:
+    //commands: setang, getpos
+
+    +x = 0 second angle  | -x = -180/180 second angle | +x = forward  -x = back
+    +y = 90 second angle | -y = -90 second angle      | +y = left     -y = right

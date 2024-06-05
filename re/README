@@ -1,4 +1,16 @@
-get psc from:
+--- [FILES] ---
+/copy_libclient.sh : Fetches and timestamps the latest libclient.so from a Steam install of Counter Strike 2.
+
+/get_offsets.sh    : Performs a signature scan on the fetched libclient.so. The identified addresses can then be inspected
+                     with radare2 to determine the offsets that should be used in the lain_vision config.
+
+/img               : Contains screenshots of areas used to produce signatures.
+
+/old_libclient     : A collection of previously released libclient.so files. Use to cross reference changes across versions.
+
+/re.txt            : Notes for reversing.
+
+
+--- [SOFTWARE] ---
+To perform signature scans, install psc:
     https://github.com/hypervisor/PatternScanner
-
-

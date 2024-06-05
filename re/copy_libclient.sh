@@ -3,4 +3,7 @@ CLIENT_PATH="${HOME}/.steam/steam/steamapps/common/Counter-Strike Global Offensi
 TIMESTAMP=$(stat -c '%W' "${CLIENT_PATH}")
 TIME=$(date -d "@${TIMESTAMP}" +'%d-%m-%Y')
 
+echo ${TIMESTAMP}
+echo ${TIME}
+
 cp "${CLIENT_PATH}" "./libclient.so.${TIME}"
