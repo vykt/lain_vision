@@ -1,7 +1,3 @@
- --- todo:
-1) refactor libpwu to support lkm (kill me)
-2) write lkm to read segments from remote vm
-
  --- funcs:
 struct task_struct * find_task_by_vpid(pid_t vnr)
 int access_remote_vm(struct mm_struct *mm, unsigned long addr. void *buf, int len, int write)
