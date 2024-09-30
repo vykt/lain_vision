@@ -7,7 +7,7 @@ INTERNAL ENTITY NAMES:
     player               : pawn
 
 
-OFFSETS (old):
+OFFSETS:
 
 player(pawn):
     0x49c  : libclient.so //health 1
