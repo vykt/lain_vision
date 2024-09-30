@@ -1,4 +1,1 @@
- --- funcs:
-struct task_struct * find_task_by_vpid(pid_t vnr)
-int access_remote_vm(struct mm_struct *mm, unsigned long addr. void *buf, int len, int write)
-int access_process_vm(struct task_struct *tsk, unsigned long addr, void *buf, int len, int write)
+ See https://github.com/vykt/lainko
