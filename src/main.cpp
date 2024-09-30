@@ -20,7 +20,7 @@
 #define YELLOW "\033[33m"
 
 //how many times to re-read cached data before re-reading all state
-#define CACHE_READS_MAX 1000
+#define CACHE_READS_MAX 10
 
 
 void error_terminate(std::optional<std::string> err) {

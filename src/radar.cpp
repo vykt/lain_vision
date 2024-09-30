@@ -107,7 +107,7 @@ void radar::draw_radar() {
         //get next player entity
         p_ent_ptr = &(*this->player_ents)[i];
 
-        if (p_ent_ptr->vitals.health < 0 || p_ent_ptr->vitals.health > 100) continue;
+        if (p_ent_ptr->vitals.health <= 0 || p_ent_ptr->vitals.health > 100) continue;
 
         //get screen coordinates for this player entity, and check if it should be drawn
         if(!pos_to_screen(p_ent_ptr->pos_view.x, p_ent_ptr->pos_view.y, &scr_x, &scr_y)) continue;
